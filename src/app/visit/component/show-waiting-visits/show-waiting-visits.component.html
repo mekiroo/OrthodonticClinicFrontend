@@ -1,0 +1,142 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container">
+  <div class="container component-content-container">
+    <div class="container justify-content-center align-items-start mt-4 mb-5">
+
+      <!-- Header -->
+      <h1 class="display-4 text-center mb-4">Zaplanowane wizyty</h1>
+      <h5 class="text-center lead">
+        <span *ngIf="patientLoggedIn">Pacjent: </span>
+        <span *ngIf="!patientLoggedIn">Pracownik: </span>
+        {{userFullName}}
+      </h5>
+
+      <!-- Search input -->
+      <div class="md-form mt-5 ml-4 mr-4">
+        <input type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput/>
+        <label for="search">Wyszukaj</label>
+      </div>
+
+      <!-- Table with visits -->
+      <div class="table-responsive">
+        <table mdbTable #tableEl="mdbTable" class="z-depth-1">
+          <thead class="table-head">
+          <tr>
+            <th class="table-head-item">Lp.</th>
+            <th class="table-head-item">Usługa</th>
+            <th class="table-head-item" *ngIf="patientLoggedIn">Specjalista</th>
+            <th class="table-head-item" *ngIf="!patientLoggedIn">Pacjent</th>
+            <th class="table-head-item">Godzina</th>
+            <th class="table-head-item" (click)="reverseVisitsArray()">
+              Data
+              <mdb-icon fas icon="sort"></mdb-icon>
+            </th>
+            <th class="table-head-item">Status</th>
+            <th class="table-head-item">Operacja</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="!requestSending" class="table-body">
+          <tr *ngFor="let visit of visits; let i = index">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">
+              {{i + 1}}
+            </th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{visit.visitTypeName}}
+            </td>
+            <td
+              *ngIf="patientLoggedIn && i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{visit.employeeFullName}}
+            </td>
+            <td
+              *ngIf="!patientLoggedIn && i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{visit.patientFullName}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{visit.visitTime}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{visit.date}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{visit.status}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              <div (click)="setVisitToCancel(i)">
+                <button type="button" class="btn btn-sm btn-table" (click)="showCancelVisitPopup(i)">
+                  Anuluj
+                </button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+          <!-- Empty visits array -->
+          <tr *ngIf="!requestSending && visits.length === 0">
+            <td colspan="7" class="text-center empty-table-message">
+              <p class="p-5">Brak zaplanowanych wizyt</p>
+            </td>
+          </tr>
+          <!-- Loading spinner -->
+          <tr *ngIf="requestSending">
+            <td colspan="7" class="text-center spinner">
+              <div class="spinner-border text-info table-spinner" role="status">
+              </div>
+            </td>
+          </tr>
+
+          <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="7">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="visits"></mdb-table-pagination>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+
+      <!-- Cancel popup -->
+      <div mdbModal #cancelPopup="mdbModal" class="modal fade" role="dialog" tabindex="-1"
+           aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="cancelPopup.hide()">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title w-100">Anulacja wizyty</h4>
+            </div>
+            <div *ngIf="selectedVisit" class="modal-body">
+              <p>
+                <span class="font-weight-bold">Usługa: </span>
+                <span class="font-italic">{{selectedVisit.visitTypeName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Pacjent: </span>
+                <span class="font-italic">{{selectedVisit.patientFullName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Godzina: </span>
+                <span class="font-italic">{{selectedVisit.visitTime}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Data: </span>
+                <span class="font-italic">{{selectedVisit.date}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Status: </span>
+                <span class="font-italic">{{selectedVisit.status}}</span>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" (click)="cancelVisit()">
+                <span *ngIf="requestSending" class="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"></span>
+                Anuluj wizytę
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

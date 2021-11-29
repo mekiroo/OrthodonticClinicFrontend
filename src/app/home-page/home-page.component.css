@@ -1,0 +1,47 @@
+.carousel-img {
+  height: 520px;
+  background-position: center;
+  background-size: cover;
+}
+
+.carousel-img-one {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../assets/home-page/carousel-1.jpg');
+}
+
+.carousel-img-two {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../assets/home-page/carousel-2.jpg');
+}
+
+.carousel-img-three {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../assets/home-page/carousel-3.jpg');
+}
+
+.carousel-slide-title {
+  font-size: 5rem;
+}
+
+.carousel-slide-description {
+  font-size: 2rem;
+}
+
+
+/*    main    */
+.main-divider {
+  margin: 5rem 0;
+}
+
+.main-footer {
+  background-color: #313233;
+}
+
+/*     footer     */
+.footer-section-title {
+  font-weight: bold;
+  margin-bottom: 2px;
+  margin-top: 2px;
+}
+
+.footer-section-content {
+  font-size: 1.2rem;
+  margin-bottom: 0px;
+}

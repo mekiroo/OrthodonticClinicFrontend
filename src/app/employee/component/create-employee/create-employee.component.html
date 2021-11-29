@@ -1,0 +1,107 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container">
+  <div class="container component-content-container">
+    <div class="container justify-content-center align-items-start mt-4 mb-5">
+
+      <!-- Header -->
+      <h1 class="display-4 text-center mb-4">Dodawanie pracownika</h1>
+
+      <div class="container">
+        <form [formGroup]="createEmployeeForm" (ngSubmit)="onFormSubmit()">
+          <!-- First name and last name -->
+          <div class="row mt-5 pt-4">
+            <div class="col">
+              <label for="firstName">Imię:</label>
+              <input id="firstName" formControlName="firstName" type="text" class="form-control" placeholder="Imię">
+              <span *ngIf="!createEmployeeForm.get('firstName').valid && createEmployeeForm.get('firstName').touched"
+                    class="error-message-field">Proszę podać imię</span>
+            </div>
+            <div class="col">
+              <label for="lastName">Nazwisko:</label>
+              <input id="lastName" formControlName="lastName" type="text" class="form-control" placeholder="Nazwisko">
+              <span *ngIf="!createEmployeeForm.get('lastName').valid && createEmployeeForm.get('lastName').touched"
+                    class="error-message-field">Proszę podać nazwisko</span>
+            </div>
+          </div>
+
+          <!-- Email and phone number -->
+          <div class="row mt-4">
+            <div class="col">
+              <label for="email">E-mail:</label>
+              <input id="email" formControlName="email" type="text" class="form-control" placeholder="E-mail">
+              <span *ngIf="!createEmployeeForm.get('email').valid && createEmployeeForm.get('email').touched"
+                    class="error-message-field">Proszę podać prawidłowy email</span>
+            </div>
+            <div class="col">
+              <label for="phoneNumber">Telefon:</label>
+              <input id="phoneNumber" formControlName="phoneNumber" type="text" class="form-control"
+                     placeholder="Telefon">
+              <span
+                *ngIf="!createEmployeeForm.get('phoneNumber').valid && createEmployeeForm.get('phoneNumber').touched"
+                class="error-message-field">Proszę podać prawidłowy telefon</span>
+            </div>
+          </div>
+
+          <!-- Position and username -->
+          <div class="row mt-4">
+            <div class="col form-group">
+              <label for="inputState">Stanowisko:</label>
+              <select formControlName="positionName" id="inputState" class="form-control">
+                <option hidden selected> -- wybierz stanowisko -- </option>
+                <option *ngFor="let employeePosition of employeePositions">
+                  {{ employeePosition.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="username">Nazwa użytkownika:</label>
+              <input id="username" formControlName="username" type="text" class="form-control"
+                     placeholder="Nazwa użytkownika">
+              <span *ngIf="!createEmployeeForm.get('username').valid && createEmployeeForm.get('username').touched"
+                    class="error-message-field">Nazwa użytkownika powinna zawierać od 6 do 30 znaków</span>
+            </div>
+          </div>
+
+          <!-- Password and repeat password -->
+          <div class="row mt-4">
+            <div class="col">
+              <label for="password">Hasło:</label>
+              <input id="password" formControlName="password" type="password" class="form-control" placeholder="Hasło">
+              <span *ngIf="!createEmployeeForm.get('password').valid && createEmployeeForm.get('password').touched"
+                    class="error-message-field">Hasło powinno zawierać od 6 do 30 znaków</span>
+            </div>
+            <div class="col">
+              <label for="repeatedPassword">Powtórz hasło:</label>
+              <input id="repeatedPassword" formControlName="repeatedPassword" type="password" class="form-control"
+                     placeholder="Powtórz hasło">
+              <span
+                *ngIf="!createEmployeeForm.get('repeatedPassword').valid && createEmployeeForm.get('repeatedPassword').touched"
+                class="error-message-field">Hasła nie są takie same</span>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <span *ngIf="emailAlreadyExists"
+                  class="error-message-request">Istnieje już konto z takim e-mailem<br/></span>
+            <span *ngIf="usernameAlreadyExists" class="error-message-request">Istnieje już konto z taką nazwą użytkownika<br/></span>
+            <span *ngIf="undefinedErrorFromBackend" class="error-message-request">Wystąpił niezdefiniowany błąd. Spróbuj ponownie</span>
+          </div>
+
+          <!-- Submit button -->
+          <div class="row align-items-center justify-content-center mt-5">
+            <div class="col-4">
+              <button [disabled]="!createEmployeeForm.valid"
+                      [ngClass]="{'btn-secondary': !createEmployeeForm.valid, 'btn-info': createEmployeeForm.valid}"
+                      class="btn btn-block mt-4" type="submit">
+                <span *ngIf="sendingRequest" class="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"></span>
+                Dodaj pracownika
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+.component-background-container {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../../../assets/background/background.jpg");
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.component-content-container {
+  height: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: rgba(243, 237, 237, 0.95);
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+  rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+  rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+
+/* Table */
+.table-head {
+  background-color: #a49c9c;
+}
+
+.table-head-item {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.table-body {
+  background-color: white;
+}
+
+.btn-table {
+  color: black;
+  background-color: #dcd5d1;
+  border-color: #c7bab1;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+td {
+  color: #212529;
+  font-size: .9rem;
+  font-weight: 400;
+}
+
+
+/* Loading spinner */
+.table-spinner {
+  height: 5rem;
+  width: 5rem;
+}
+

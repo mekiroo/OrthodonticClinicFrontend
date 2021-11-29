@@ -1,0 +1,145 @@
+.component-background-container {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../../../assets/background/background.jpg");
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.component-content-container {
+  height: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background-color: rgba(243, 237, 237, 0.95);
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+  rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+  rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.main-container {
+  margin-top: 60px;
+  padding-bottom: 20px;
+  background-color: rgba(243, 237, 237, 0.95);
+  border-radius: 10px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+  rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+  rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.row {
+  padding-top: 30px;
+  font-size: 1.2rem;
+}
+
+
+/* Card */
+.card {
+  height: 50vh;
+  margin-top: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
+  padding-left: 0;
+  padding-right: 0;
+  background-color: #f8f6f6;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #a49c9c;
+}
+
+.card-title {
+  margin: 0;
+  padding: 4%;
+  background-color: #a49c9c;
+  text-align: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-style: solid;
+  border-bottom-color: #a49c9c;
+}
+
+.card-content {
+  height: 100%;
+  overflow: auto;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.card-content-empty {
+  height: 100%;
+  display: flex;
+  overflow: auto;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #606060;
+}
+
+.card-item {
+  margin: 0;
+  padding: 5%;
+  font-size: 1rem;
+  border-bottom-style: inset;
+  border-bottom-color: #e3e3e3;
+  cursor: pointer;
+}
+
+.card-item-description {
+  margin: 0.7rem 1rem;
+  font-size: 1rem;
+}
+
+.card-item-selected {
+  background-color: #e7e3e1;
+}
+
+/* Spinner */
+.spinner-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner-card {
+  height: 5rem;
+  width: 5rem;
+  text-align: center;
+}
+
+
+/* Button */
+.button-box {
+  margin-right: 20px;
+  margin-left: 20px;
+  padding-left: 0;
+  padding-right: 0;
+  height: 50vh;
+  display: flex;
+  align-items: center;
+}
+
+.btn-primary {
+  background-color: #027fea;
+}
+
+.btn {
+  height: 15%;
+  width: 100%;
+  color: black;
+  font-size: 1.1rem;
+}
+
+
+/* Calendar */
+.date-picker {
+  height: 100%;
+  width: 100%;
+}

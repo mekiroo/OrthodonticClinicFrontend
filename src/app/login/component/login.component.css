@@ -1,0 +1,41 @@
+.component-background-container {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../../../assets/background/background.jpg");
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.component-content-container {
+  height: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
+/* Form */
+.form-container {
+  background-color: rgb(253, 250, 250);
+  border-radius: 1rem;
+  font-size: 1rem;
+}
+
+.error-message-request {
+  font-size: 1rem;
+  color: red;
+}
+
+.error-message-field {
+  font-size: 0.8rem;
+  color: red;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

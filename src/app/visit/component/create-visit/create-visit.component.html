@@ -1,0 +1,136 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container">
+  <div class="container component-content-container">
+
+    <!-- Header -->
+    <h1 class="display-4 text-center  mt-4 mb-4">Rezerwacja wizyty</h1>
+    <h5 *ngIf="employeeLoggedIn" class="text-center lead">
+      Pacjent: {{patientFullName}}
+    </h5>
+
+    <!-- First row -->
+    <div class="row justify-content-around">
+      <!-- Visit type card   -->
+      <div class="col-md-5 col-lg-3 card">
+        <div class="card-title">
+          <h4>Usługa</h4>
+        </div>
+        <div class="card-content">
+          <p class="card-item"
+             *ngFor="let visitType of visitTypes; let i = index"
+             (click)="onVisitTypeSelect(i)"
+             [ngClass]="{'card-item-selected': selectedVisitType && selectedVisitType.id === visitType.id}">
+            {{i + 1}}. {{visitType.name}}
+          </p>
+        </div>
+      </div>
+
+      <!-- Visit type description card -->
+      <div class="col-md-5 col-lg-3 card">
+        <div class="card-title">
+          <h4>Opis</h4>
+        </div>
+        <div *ngIf="selectedVisitType && !visitTypeDescriptionLoading" class="card-content">
+          <p class="card-item-description">
+            <span class="font-weight-bold">Nazwa: </span>
+            <span class="font-italic">{{selectedVisitType.name}}</span>
+          </p>
+          <p class="card-item-description">
+            <span class="font-weight-bold">Opis: </span>
+            <span class="font-italic">{{selectedVisitType.description}}</span>
+          </p>
+          <p class="card-item-description">
+            <span class="font-weight-bold">Czas trwania: </span>
+            <span class="font-italic">{{selectedVisitType.duration}}  min</span>
+          </p>
+          <p class="card-item-description">
+            <span class="font-weight-bold">Cena: </span>
+            <span class="font-italic">{{selectedVisitType.price}} zł</span>
+          </p>
+        </div>
+        <!-- Spinner -->
+        <div *ngIf="visitTypeDescriptionLoading" class="spinner-container">
+          <div class="spinner-border text-info spinner-card" role="status">
+          </div>
+        </div>
+      </div>
+
+      <!-- Visit date card -->
+      <div class="col-md-5 col-lg-3 card">
+        <div class="card-title">
+          <h4>Data wizyty</h4>
+        </div>
+        <div *ngIf="selectedVisitType && !calendarLoading" class="card-content">
+          <ngb-datepicker class="date-picker" [(ngModel)]="dateStruct" (navigate)="date = $event.next"
+                          [markDisabled]="isDateDisabled" (dateSelect)="onDateSelect($event)">
+          </ngb-datepicker>
+        </div>
+        <!-- Spinner -->
+        <div *ngIf="calendarLoading" class="spinner-container">
+          <div class="spinner-border text-info spinner-card" role="status">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second row -->
+    <!-- Employees card -->
+    <div class="row justify-content-around mb-4">
+      <div class="col-md-5 col-lg-3 card">
+        <div class="card-title">
+          <h4>Specjalista</h4>
+        </div>
+        <div *ngIf="selectedVisitDate && !employeesLoading" class="card-content">
+          <p class="card-item" *ngFor="let employee of employees; let i = index"
+             (click)="onEmployeeSelect(i)"
+             [ngClass]="{'card-item-selected': selectedEmployee && selectedEmployee.id === employee.id}">
+            {{i + 1}}. {{employee.firstName}} {{employee.lastName}}
+          </p>
+          <div class="card-content-empty" *ngIf="employees && employees.length === 0">
+            <p>Brak dostępnych specjalistów w danym dniu. Wybierz inny termin.</p>
+          </div>
+        </div>
+        <!-- Spinner -->
+        <div *ngIf="employeesLoading" class="spinner-container">
+          <div class="spinner-border text-info spinner-card" role="status">
+          </div>
+        </div>
+      </div>
+
+      <!-- Visit time card -->
+      <div class="col-md-5 col-lg-3 card">
+        <div class="card-title">
+          <h4>Godzina wizyty</h4>
+        </div>
+        <div *ngIf="selectedEmployee && !requestSending && !employeeIsOnLeave" class="card-content">
+          <p class="card-item"
+             *ngFor="let visitTime of possibleVisitTimes; let i = index"
+             (click)="onVisitTimeSelect(i)"
+             [ngClass]="{'card-item-selected': selectedVisitTime && selectedVisitTimeIndex === i}">
+            {{visitTime.startTime}} - {{visitTime.endTime}}
+          </p>
+        </div>
+        <div  *ngIf="selectedEmployee && !requestSending && employeeIsOnLeave" class="card-content-empty">
+          <p>Pracownik jest na urlopie w wybranym terminie</p>
+        </div>
+        <!-- Spinner -->
+        <div *ngIf="requestSending" class="spinner-container">
+          <div class="spinner-border text-info spinner-card" role="status">
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5 col-lg-3 button-box">
+        <button type="button" class="btn"
+                (click)="onCreateVisit()"
+                [ngClass]="{'btn-secondary': !(selectedVisitType && selectedVisitDate && selectedEmployee && selectedVisitTime),
+                    'btn-primary': selectedVisitType && selectedVisitDate && selectedEmployee && selectedVisitTime}"
+                [disabled]="!(selectedVisitType && selectedVisitDate && selectedEmployee && selectedVisitTime)">
+          <span *ngIf="requestSending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Zarezerwuj wizytę
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>

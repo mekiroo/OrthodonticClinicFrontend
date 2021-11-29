@@ -1,0 +1,51 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container justify-content-center align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="component-content-container col-9 col-lg-5">
+        <form class="border border-light p-5 form-container" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+          <!-- Form heading -->
+          <div class="text-center">
+            <p class="h2 mb-5">Logowanie</p>
+          </div>
+
+          <!-- Username -->
+          <div class="form-row mb-4">
+            <div class="col">
+              <label for="username">Nazwa użytkownika:</label>
+              <input id="username" formControlName="username" type="text" class="form-control"
+                     placeholder="Nazwa użytkownika">
+              <span *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched"
+                    class="error-message-field">Proszę podać nazwę użytkownika</span>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-row mb-4">
+            <div class="col">
+              <label for="password">Hasło:</label>
+              <input id="password" formControlName="password" type="password" class="form-control" placeholder="Hasło">
+              <span *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched"
+                    class="error-message-field">Proszę podać hasło</span>
+            </div>
+          </div>
+
+          <span *ngIf="loginFailed" class="error-message-request">Podane dane do logowania są nieprawidłowe</span>
+
+          <button [disabled]="!loginForm.valid || sendingRequest"
+                  [ngClass]="{'btn-secondary': !loginForm.valid, 'btn-info': loginForm.valid}"
+                  class="btn btn-block my-4" type="submit">
+              <span *ngIf="sendingRequest" class="spinner-border spinner-border-sm" role="status"
+                    aria-hidden="true"></span>
+            Zaloguj się
+          </button>
+
+          <p>Nie masz konta?
+            <a routerLink="/register">Zarejestruj się</a>
+          </p>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

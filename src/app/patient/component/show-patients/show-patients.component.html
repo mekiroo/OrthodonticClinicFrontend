@@ -1,0 +1,75 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container">
+  <div class="container component-content-container">
+    <div class="container justify-content-center align-items-start mt-4 mb-5">
+
+      <!-- Header -->
+      <h1 class="display-4 text-center mb-4">Pacjenci</h1>
+
+      <!-- Search input -->
+      <div class="md-form mt-5 ml-4 mr-4">
+        <input type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput/>
+        <label for="search">Wyszukaj</label>
+      </div>
+
+      <!-- Table with patients -->
+      <div class="table-responsive">
+        <table mdbTable #tableEl="mdbTable" class="z-depth-1">
+          <thead class="table-head">
+          <tr>
+            <th class="table-head-item">Lp.</th>
+            <th class="table-head-item">Imię i nazwisko</th>
+            <th class="table-head-item">Pesel</th>
+            <th class="table-head-item">Email</th>
+            <th class="table-head-item">Numer telefonu</th>
+            <th class="table-head-item">Operacja</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="!requestSending" class="table-body">
+          <tr *ngFor="let patient of patients; let i = index" class="table-row">
+            <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row">
+              {{i + 1}}
+            </th>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{patient.patientFullName}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{patient.pesel}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{patient.email}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+              {{patient.phoneNumber}}
+            </td>
+            <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" class="mr-1">
+              <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 btn-table"
+                      (click)="navigateToPatientVisitsHistory(i)">
+                Historia leczenia
+              </button>
+              <button type="button" (click)="navigateToCreateVisit(i)"
+                      class="btn btn-primary btn-sm mr-0 mb-2 btn-table">
+                Umów wizytę
+              </button>
+            </td>
+          </tr>
+          </tbody>
+          <!-- Loading spinner -->
+          <tr *ngIf="requestSending">
+            <td colspan="6" class="text-center spinner">
+              <div class="spinner-border text-info table-spinner" role="status">
+              </div>
+            </td>
+          </tr>
+          <tfoot class="grey lighten-5 w-100">
+          <tr>
+            <td colspan="6">
+              <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="patients"></mdb-table-pagination>
+            </td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

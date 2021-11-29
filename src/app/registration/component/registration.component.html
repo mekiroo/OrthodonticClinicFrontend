@@ -1,0 +1,100 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container justify-content-center align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="component-content-container col-12 col-lg-7">
+        <form class="border border-light pt-4 pb-3 pl-5 pr-5 form-container" [formGroup]="registerForm"
+              (ngSubmit)="onFormSubmit()">
+
+          <!-- Form heading -->
+          <div class="text-center">
+            <p class="h2 mb-4">Rejestracja</p>
+          </div>
+
+          <!-- First name and last name -->
+          <div class="form-row mb-2">
+            <div class="col">
+              <label for="firstName">Imię:</label>
+              <input id="firstName" formControlName="firstName" type="text" class="form-control" placeholder="Imię">
+              <span *ngIf="!registerForm.get('firstName').valid && registerForm.get('firstName').touched"
+                    class="error-message-field">Proszę podać imię</span>
+            </div>
+            <div class="col">
+              <label for="lastName">Nazwisko:</label>
+              <input id="lastName" formControlName="lastName" type="text" class="form-control" placeholder="Nazwisko">
+              <span *ngIf="!registerForm.get('lastName').valid && registerForm.get('lastName').touched"
+                    class="error-message-field">Proszę podać nazwisko</span>
+            </div>
+          </div>
+
+          <!-- PESEL -->
+          <div class="form-row mb-2">
+            <div class="col">
+              <label for="pesel">PESEL:</label>
+              <input id="pesel" formControlName="pesel" type="text" class="form-control" placeholder="PESEL">
+              <span *ngIf="!registerForm.get('pesel').valid && registerForm.get('pesel').touched"
+                    class="error-message-field">Proszę podać prawidłowy numer PESEL</span>
+            </div>
+          </div>
+
+          <!-- Email and phone number -->
+          <div class="form-row mb-2">
+            <div class="col">
+              <label for="email">E-mail:</label>
+              <input id="email" formControlName="email" type="text" class="form-control" placeholder="E-mail">
+              <span *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched"
+                    class="error-message-field">Proszę podać prawidłowy email</span>
+            </div>
+            <div class="col">
+              <label for="phoneNumber">Telefon:</label>
+              <input id="phoneNumber" formControlName="phoneNumber" type="text" class="form-control"
+                     placeholder="Telefon">
+              <span *ngIf="!registerForm.get('phoneNumber').valid && registerForm.get('phoneNumber').touched"
+                    class="error-message-field">Proszę podać prawidłowy telefon</span>
+            </div>
+          </div>
+
+          <!-- Username -->
+          <div class="form-row mb-2">
+            <div class="col">
+              <label for="username">Nazwa użytkownika:</label>
+              <input id="username" formControlName="username" type="text" class="form-control"
+                     placeholder="Nazwa użytkownika">
+              <span *ngIf="!registerForm.get('username').valid && registerForm.get('username').touched"
+                    class="error-message-field">Nazwa użytkownika powinna zawierać od 6 do 30 znaków</span>
+            </div>
+          </div>
+
+          <!-- Password and repeated password -->
+          <div class="form-row mb-5">
+            <div class="col">
+              <label for="password">Hasło:</label>
+              <input id="password" formControlName="password" type="password" class="form-control" placeholder="Hasło">
+              <span *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched"
+                    class="error-message-field">Hasło powinno zawierać od 6 do 30 znaków</span>
+            </div>
+            <div class="col">
+              <label for="repeatedPassword">Powtórz hasło:</label>
+              <input id="repeatedPassword" formControlName="repeatedPassword" type="password" class="form-control"
+                     placeholder="Powtórz hasło">
+              <span *ngIf="!registerForm.get('repeatedPassword').valid && registerForm.get('repeatedPassword').touched"
+                    class="error-message-field">Hasła nie są takie same</span>
+            </div>
+          </div>
+
+          <span *ngIf="emailAlreadyExists" class="error-message-request">Istnieje już konto z takim e-mailem<br/></span>
+          <span *ngIf="usernameAlreadyExists" class="error-message-request">Istnieje już konto z taką nazwą użytkownika<br/></span>
+          <span *ngIf="undefinedErrorFromBackend" class="error-message-request">Wystąpił niezdefiniowany błąd. Spróbuj ponownie</span>
+
+          <button [disabled]="!registerForm.valid"
+                  [ngClass]="{'btn-secondary': !registerForm.valid, 'btn-info': registerForm.valid}"
+                  class="btn btn-block mt-4" type="submit">
+            <span *ngIf="sendingRequest" class="spinner-border spinner-border-sm" role="status"
+                  aria-hidden="true"></span>
+            Zarejestruj się
+          </button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

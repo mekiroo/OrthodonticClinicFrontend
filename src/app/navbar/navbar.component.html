@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top main-navbar">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/"><i class="fas fa-tooth"></i> Ortho<span class="text-primary">Care</span></a>
+
+    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+
+      <!-- Patient view -->
+      <div *ngIf="userLoggedIn && patientLoggedIn" class="navbar-nav">
+        <div ngbDropdown display="dynamic">
+          <a id="patientDropdownButton" class="nav-link" ngbDropdownToggle role="button">Moje wizyty</a>
+          <div ngbDropdownMenu aria-labelledby="patientDropdownButton" class="dropdown-menu">
+            <a ngbDropdownItem (click)="navigateToCreateVisit()">Umów wizytę</a>
+            <a ngbDropdownItem routerLink="/waiting-visits" (click)="$event.preventDefault()">Zaplanowane wizyty</a>
+          </div>
+        </div>
+        <a class="nav-link" (click)="navigateToVisitsHistory()" role="button">Historia leczenia</a>
+      </div>
+
+      <!-- Employee view -->
+      <div *ngIf="userLoggedIn && employeeLoggedIn" class="navbar-nav">
+        <div ngbDropdown display="dynamic">
+          <a id="employeeDropdownButton" class="nav-link" ngbDropdownToggle role="button">Wizyty</a>
+          <div ngbDropdownMenu aria-labelledby="employeeDropdownButton" class="dropdown-menu">
+            <a ngbDropdownItem routerLink="/todays-visits">Dzisiejsze wizyty</a>
+            <a ngbDropdownItem routerLink="/waiting-visits" (click)="$event.preventDefault()">Wszystkie zaplanowane
+              wizyty</a>
+          </div>
+        </div>
+        <a class="nav-link" routerLink="/patients" role="button">Pacjenci</a>
+      </div>
+
+      <!-- Admin view -->
+      <div *ngIf="userLoggedIn && adminLoggedIn" class="navbar-nav">
+        <div ngbDropdown display="dynamic">
+          <a id="adminDropdownButton" class="nav-link" ngbDropdownToggle role="button">Pracownicy</a>
+          <div ngbDropdownMenu aria-labelledby="adminDropdownButton" class="dropdown-menu">
+            <a ngbDropdownItem routerLink="/create-employee">Dodaj pracownika</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar-nav ml-auto">
+        <div *ngIf="userLoggedIn" ngbDropdown display="dynamic">
+          <a id="dropdownButton2" class="nav-link" ngbDropdownToggle role="button">
+            <i class="far fa-user"></i>
+            <span *ngIf="!adminLoggedIn"> {{ getLoggedUserFullName() }}</span>
+            <span *ngIf="adminLoggedIn"> Admin: {{ authService.getUser().username }}</span>
+          </a>
+          <div ngbDropdownMenu aria-labelledby="dropdownButton2" class="dropdown-menu">
+            <a ngbDropdownItem href="#" (click)="onLogOut()">Wyloguj się</a>
+          </div>
+        </div>
+
+        <a *ngIf="!userLoggedIn" class="btn btn-info btn-sm mx-2 my-1 navbar-button" routerLink="/register" role="button">
+          Rejestracja
+        </a>
+        <a *ngIf="!userLoggedIn" class="btn btn-info btn-sm mx-2 my-1 navbar-button" routerLink="/login" role="button">
+          Logowanie
+        </a>
+      </div>
+
+    </div>
+  </div>
+</nav>

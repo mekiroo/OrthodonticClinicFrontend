@@ -1,0 +1,177 @@
+<div class="d-flex flex-column flex-grow-1 component-background-container">
+  <div class="container component-content-container">
+    <div class="container justify-content-center align-items-start mt-4 mb-5">
+
+      <!-- Header -->
+      <h1 class="display-4 text-center mb-4">Dzisiejsze wizyty</h1>
+
+      <!-- Search input -->
+      <div class="md-form mt-5 ml-4 mr-4">
+        <input type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput/>
+        <label for="search">Wyszukaj</label>
+      </div>
+
+      <!-- Table with visits -->
+      <div class="table-responsive">
+        <table mdbTable #tableEl="mdbTable" class="z-depth-1">
+          <thead class="table-head">
+          <tr>
+            <th class="table-head-item">Lp.</th>
+            <th class="table-head-item">Usługa</th>
+            <th class="table-head-item">Pacjent</th>
+            <th class="table-head-item">Godzina</th>
+            <th class="table-head-item">Data</th>
+            <th class="table-head-item">Status</th>
+            <th class="table-head-item">Operacja</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="!requestSending && visits.length > 0" class="table-body">
+          <tr *ngFor="let visit of visits; let i = index"
+              [ngClass]="{'completed-visit': visit.status === 'Zakończona'}">
+            <th>{{i + 1}}</th>
+            <th>{{visit.visitTypeName}}</th>
+            <th>{{visit.patientFullName}}</th>
+            <th>{{visit.visitTime}}</th>
+            <th>{{visit.date}}</th>
+            <th>{{visit.status}}</th>
+            <th class="mr-0">
+              <button type="button" class="btn btn-primary btn-sm mr-2 mb-2 btn-table" (click)="showEditVisitPopup(i)">
+                Edytuj
+              </button>
+              <button *ngIf="visit.status === 'Oczekująca'" type="button" (click)="showCancelPopup(i)"
+                      class="btn btn-primary btn-sm mr-0 mb-2 btn-table">
+                Anuluj
+              </button>
+            </th>
+          </tr>
+          </tbody>
+          <!-- Empty visits array -->
+          <tr *ngIf="!requestSending && visits.length === 0">
+            <td colspan="7" class="text-center empty-table-message">
+              <p class="p-5">Brak zaplanowanych na dzisiaj wizyt</p>
+            </td>
+          </tr>
+          <!-- Loading spinner -->
+          <tr *ngIf="requestSending">
+            <td colspan="7" class="text-center spinner">
+              <div class="spinner-border text-info table-spinner" role="status">
+              </div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <!-- Cancel popup -->
+      <div mdbModal #cancelPopup="mdbModal" class="modal fade" role="dialog" tabindex="-1"
+           aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="cancelPopup.hide()">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title w-100">Anulacja wizyty</h4>
+            </div>
+            <div *ngIf="selectedVisit" class="modal-body">
+              <p>
+                <span class="font-weight-bold">Usługa: </span>
+                <span class="font-italic">{{selectedVisit.visitTypeName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Pacjent: </span>
+                <span class="font-italic">{{selectedVisit.patientFullName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Godzina: </span>
+                <span class="font-italic">{{selectedVisit.visitTime}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Data: </span>
+                <span class="font-italic">{{selectedVisit.date}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Status: </span>
+                <span class="font-italic">{{selectedVisit.status}}</span>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" (click)="cancelVisit()">
+                <span *ngIf="requestSending" class="spinner-border spinner-border-sm" role="status"
+                      aria-hidden="true"></span>
+                Anuluj wizytę
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit visit popup -->
+      <div mdbModal #editVisitPopup="mdbModal" class="modal fade" role="dialog" tabindex="-1"
+           aria-labelledby="myBasicModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close pull-right" aria-label="Close" (click)="editVisitPopup.hide()">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title w-100" id="myModalLabel">Edycja wizyty</h4>
+            </div>
+            <div *ngIf="selectedVisit && editVisitForm" class="modal-body">
+              <p>
+                <span class="font-weight-bold">Usługa: </span>
+                <span class="font-italic">{{selectedVisit.visitTypeName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Pacjent: </span>
+                <span class="font-italic">{{selectedVisit.patientFullName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Specjalista: </span>
+                <span class="font-italic">{{selectedVisit.employeeFullName}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Godzina: </span>
+                <span class="font-italic">{{selectedVisit.visitTime}}</span>
+              </p>
+              <p>
+                <span class="font-weight-bold">Data: </span>
+                <span class="font-italic">{{selectedVisit.date}}</span>
+              </p>
+
+
+              <form [formGroup]="editVisitForm" (ngSubmit)="onEditVisit()">
+                <div class="form-group">
+                  <label for="description" class="font-weight-bold">Opis:</label>
+                  <textarea class="form-control" id="description" rows="3" formControlName="description"
+                            [innerHTML]="selectedVisit.description"
+                  >
+                  </textarea>
+                  <span *ngIf="!editVisitForm.get('description').valid && editVisitForm.get('description').touched"
+                        class="help-block">Pole opis nie może być puste</span>
+                </div>
+                <div class="form-group">
+                  <label for="inputState" class="font-weight-bold">Status:</label>
+                  <select formControlName="status" id="inputState" class="form-control">
+                    <option>Oczekująca</option>
+                    <option>Zakończona</option>
+                    <option>Anulowana</option>
+                  </select>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary"
+                          [disabled]="!editVisitForm.dirty || !editVisitForm.valid">
+                    <span *ngIf="requestSending" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                    Zapisz
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
